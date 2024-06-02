@@ -1,13 +1,13 @@
 //
-//  PageWellcomeViewController.swift
+//  MainTabBarController.swift
 //  EnterToApp
 //
-//  Created by Артур Бирюков on 25.05.2024.
+//  Created by Артур Бирюков on 31.05.2024.
 //
 
 import UIKit
 
-class PageWellcomeViewController: UIViewController {
+class MainTabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
