@@ -8,22 +8,18 @@
 import UIKit
 
 class MainTabBarController: UITabBarController {
+    
+    var person: Person?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        person = Person(
+            firstName: "Джони",
+            lastName: "Бамбони",
+            company: "Пинцетный захват",
+            department: "Крипто аналитик",
+            position: "CEO хомяков"
+        )
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

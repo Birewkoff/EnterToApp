@@ -12,60 +12,50 @@ final class ViewController: UIViewController {
     // MARK: - IBOutlat
     @IBOutlet var userNameTF: UITextField!
     @IBOutlet var passwordTF: UITextField!
-    @IBOutlet var logInButton: UIButton!
+
+    var user: User?
     
-    // MARK: - values User and Password
-    private let userName = "123"
-    private let password = "321"
-    
-    // MARK: - prepare
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let wellcomeVC = segue.destination as? PageWellcomeViewController else { return }
-        wellcomeVC.userName = userName
+    // MARK: - viewDidLoad
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        user = User(login: "User", password: "1234")
+        
+        if let user = user {
+            userNameTF.text = user.login
+            passwordTF.text = user.password
+        }
     }
-    
     // MARK: - Keyboard touch
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
         view.endEditing(true)
     }
+    // MARK: - Transition check
+    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+        guard userNameTF.text == user?.login, passwordTF.text == user?.password else {
+            showAlert(
+                withTitle: "Неверный логин или пароль",
+                andMessage: "Пожалуйста, введите правильный логин или пароль"
+            )
+            return false
+        }
+        return true
+    }
     
     // MARK: - forgot User and Password
     @IBAction func forgotUserNameButton() {
-        showAlert(withTitle: "Oops!", andMessage: "Your name is \(userName)")
+        showAlert(
+            withTitle: "Oops!",
+            andMessage: "Your name is \(user?.login ?? "unknown")"
+        )
     }
     
     @IBAction func forgotPasswordButton() {
-        showAlert(withTitle: "Oops!", andMessage: "Your password is \(password)")
-    }
-    
-    // MARK: - Log In
-    @IBAction func logIngButtonTapped() {
-        guard
-            let inputName = userNameTF.text, !inputName.isEmpty,
-            let inputPassword = passwordTF.text, !inputPassword.isEmpty
-        else {
-            showAlert(
-                withTitle: "Invalid login or password",
-                andMessage: "Please, enter correct login and password")
-            return
-        }
-        
-        if inputName == userName && inputPassword == password {
-            performSegue(withIdentifier: "showNextScreen", sender: self)
-        } else {
-            showAlert(
-                withTitle: "Invalid login or password",
-                andMessage: "Please, enter correct login and password")
-        }
-    }
-    
-    // MARK: - Unwind
-    @IBAction func unwind(for segue: UIStoryboardSegue) {
-        if segue.identifier == "unwindToLogin" {
-                userNameTF.text = ""
-                passwordTF.text = ""
-        }
+        showAlert(
+            withTitle: "Oops!",
+            andMessage: "Your password is \(user?.password ?? "unknown")"
+        )
     }
     
     // MARK: - Alert
@@ -79,7 +69,6 @@ final class ViewController: UIViewController {
             title: "OK",
             style: .default
         ) { _ in
-            self.userNameTF.text = ""
             self.passwordTF.text = ""
         }
         alert.addAction(okAction)

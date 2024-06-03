@@ -7,23 +7,39 @@
 
 import UIKit
 
-class PersonViewController: UIViewController {
+final class PersonViewController: UIViewController {
 
+    // MARK: - IBOutlet
+    @IBOutlet var avatarImage: UIImageView!
+    
+    @IBOutlet var firstNameLabel: UILabel!
+    @IBOutlet var lastNameLabel: UILabel!
+    @IBOutlet var companyLabel: UILabel!
+    @IBOutlet var departmentLabel: UILabel!
+    @IBOutlet var positionLabel: UILabel!
+    
+    // MARK: - View Did Load
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        if let tabBarController = self.tabBarController as? MainTabBarController,
+           let person = tabBarController.person {
+            firstNameLabel.text = person.firstName
+            lastNameLabel.text = person.lastName
+            companyLabel.text = person.company
+            departmentLabel.text = person.department
+            positionLabel.text = person.position
+            
+            self.navigationItem.title = "\(person.firstName) \(person.lastName)"
+        }
+        
+        makeImageCircular(avatarImage)
+        setupGradient()
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    // MARK: - Make Image Circular
+    func makeImageCircular(_ imageView: UIImageView) {
+        imageView.layer.cornerRadius = imageView.frame.size.width / 2
+        imageView.clipsToBounds = true
     }
-    */
-
 }
